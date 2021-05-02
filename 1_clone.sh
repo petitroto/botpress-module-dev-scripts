@@ -14,4 +14,4 @@ UNIX_TIME=$(date +%s)
 # リモートリポジトリからBotpressディレクトリへモジュールを配置（既にあればbackupへ退避）
 mkdir -p backup
 mv "$BP_DIR/modules/$MODULE_NAME" "backup/$MODULE_NAME-$UNIX_TIME"
-git clone "git@github.com:$GITHUB_REPO.git" "$BP_DIR/modules/$MODULE_NAME"
+git clone "$GIT_REPO" "$BP_DIR/modules/$MODULE_NAME"
