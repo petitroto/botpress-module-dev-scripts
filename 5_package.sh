@@ -12,9 +12,13 @@ set +a
 BASE_DIR=$PWD
 UNIX_TIME=$(date +%s)
 
-# ビルドしてパッケージ化したらoutディレクトリに入れる
+# ビルドしてパッケージ化する
 cd "$BP_DIR/modules/$MODULE_NAME" || exit
 yarn build
 yarn package
-mkdir -p "$BASE_DIR/out"
-mv "$MODULE_NAME.tgz" "$BASE_DIR/out/$MODULE_NAME-$UNIX_TIME.tgz"
+
+# パッケージに含まれる余計なものを取り除いたらoutディレクトリに入れる
+mkdir -p "$BASE_DIR/out/tmp"
+tar xzf "$MODULE_NAME.tgz" -C "$BASE_DIR/out/tmp" -X exclude.txt
+tar czf "$BASE_DIR/out/$MODULE_NAME-$UNIX_TIME.tgz" -C "$BASE_DIR/out/tmp" .
+rm -Rf "$BASE_DIR/out/tmp"
